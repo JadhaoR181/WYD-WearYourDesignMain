@@ -1,0 +1,30 @@
+.dashboard {
+    padding: 20px;
+  }
+  
+  .cards {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    flex: 1;
+    margin: 0 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .card h3 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  .card p {
+    font-size: 2rem;
+    margin: 10px 0 0;
+  }
+  

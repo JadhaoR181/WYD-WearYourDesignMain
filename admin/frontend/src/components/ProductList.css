@@ -1,0 +1,170 @@
+/* Ensuring the entire page height is used */
+.product-list-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Full viewport height */
+  position: relative; /* This allows absolute positioning of pagination */
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Title at the top */
+.product-list-title-container {
+  height: 50px;
+}
+.product-list-title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+/* Main container for products, takes remaining space */
+.product-list-container {
+  flex: 1; /* This ensures the product list takes the available space */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-y: auto; /* Makes the product list scrollable if content overflows */
+  margin-top: 10px;
+  padding-bottom: 50px; /* Space for the pagination to not overlap the content */
+}
+
+/* Grid layout for products */
+.grid {
+  display: grid;
+  gap: 20px; /* Space between the cards */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Automatically fill the grid */
+}
+
+/* Styling for individual product cards */
+.product-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  min-height: 300px;  /* Ensure card has a minimum height */
+  transition: transform 0.3s ease-in-out;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);  /* Slight hover effect for a more dynamic feel */
+}
+
+/* Image container to fit image */
+.product-image-container {
+  width: 100%;
+  height: 150px; /* Fixed height for the image container */
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Ensures image maintains aspect ratio */
+}
+
+/* Button styling */
+button {
+  background-color: #f56565;
+  border-radius: 8px;
+  color: white;
+  padding: 8px 16px;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #c53030;
+}
+
+/* Description styling with expandable functionality */
+.product-description {
+  max-height: 60px; /* Limits height to 2-3 lines */
+  overflow: hidden; /* Hides overflow text */
+  transition: max-height 0.3s ease; /* Smooth transition */
+}
+
+.product-description.expanded {
+  max-height: 100px;
+  overflow-y: auto; /* Allows full height when expanded */
+}
+
+.read-more {
+  background: none;
+  border: none;
+  color: #007bff; /* Bootstrap primary color */
+  cursor: pointer;
+  text-decoration: underline;
+  
+  padding: 0;
+  margin-top: 8px;
+}
+
+/* Form styling for updates */
+.update-form {
+  margin-bottom: 20px;
+}
+
+.update-form input,
+.update-form textarea {
+  width: 100%;
+}
+
+/* Button grouping */
+.button-group {
+  display: flex;
+  gap: 0.5rem; /* Adjust spacing between buttons */
+}
+
+.pagination-controls {
+  display: flex;               /* Use Flexbox for horizontal layout */
+  justify-content: center;     /* Center pagination controls */
+  align-items: center;         /* Align items vertically in the center */
+  margin-top: 20px;
+  gap: 10px;                   /* Space between buttons and info */
+}
+
+.pagination-button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;  /* Smooth transition on hover */
+}
+
+.pagination-button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+.pagination-button:disabled {
+  background-color: #e5e4e4;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  font-size: 16px;
+  margin-left: 10px; /* Adds space between buttons and info */
+}
+
+@media (max-width: 768px) {
+  .pagination-controls {
+    flex-direction: column;  /* Stack buttons vertically on smaller screens */
+    gap: 10px;
+  }
+
+  .pagination-button {
+    width: 100%;  /* Make pagination buttons take up the full width on small screens */
+  }
+}

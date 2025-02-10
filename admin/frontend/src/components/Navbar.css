@@ -1,0 +1,31 @@
+/* src/components/Navbar.css */
+
+.navbar {
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+  }
+  
+  .navbar h1 {
+    margin: 0;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 15px; /* Space between links */
+  }
+  
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .nav-links a:hover {
+    background-color: #555; /* Highlight color on hover */
+  }
+  

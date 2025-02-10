@@ -1,0 +1,458 @@
+/* Global container */
+.container {
+    text-align: start;
+    max-width: 70%;
+    max-height: 100%;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Header styles */
+.text-center {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+h4 {
+    font-size: 16px;
+    font-weight: 400;
+    margin: 10px 0;
+}
+
+/* Customization section */
+.customization-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.options-panel {
+    width: 60%;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f8f8f8;
+    text-align: left;
+}
+
+select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: white;
+    cursor: pointer;
+}
+
+/* Color selection */
+.color-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 10px 0;
+}
+
+.color-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.color-circle:hover,
+.color-circle.selected {
+    transform: scale(1.1);
+    border: 2px solid white;
+}
+
+/* Upload buttons container */
+.upload-buttons-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.upload-section {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 45%;
+}
+
+.upload-section h4 {
+    margin-bottom: 10px;
+    text-align: start;
+}
+
+.upload-section input {
+    margin-bottom: 10px;
+}
+
+.upload-section .input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.image-preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.remove-image-btn {
+    cursor: pointer;
+    font-size: 20px;
+    color: red;
+    margin-top: 10px;
+}
+
+.upload-btn {
+    padding: 10px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.upload-btn:hover {
+    background-color: #444;
+}
+
+/* Preview panel */
+.preview-panel {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    position: relative;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.tshirt-preview {
+    height: auto;
+    max-width: 80vw;
+    max-height: 80vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--tshirt-color, #ffffff);
+    border-radius: 10px;
+}
+
+.tshirt-image {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Uploaded Image Preview */
+.image-preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.uploaded-preview {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 6px;
+    border: 2px solid #ccc;
+    padding: 3px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.image-square {
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    right: 10%;
+    bottom: 20%;
+    width: 0%;
+    height: 50%;
+    border: 2px dashed #000;
+    overflow: hidden;
+}
+
+.image-drag-area {
+    position: absolute;
+    top: 20%;
+    left: 30%;
+    right: 30%;
+    bottom: 20%;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+}
+
+.uploaded-design {
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    right: 20%;
+    bottom: 20%;
+    transform: translate(-50%, -50%);
+    max-width: 80%;
+    max-height: 80%;
+    width: auto;
+    height: auto;
+    pointer-events: none;
+    object-fit: contain;
+    z-index: 5;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Front and Back Toggle Button */
+.toggle-view-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: white;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, background 0.3s ease;
+    z-index: 10;
+}
+
+.toggle-view-btn:hover {
+    transform: scale(1.1);
+    background: #f0f0f0;
+}
+
+/* Size options */
+.size-options {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.size-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: white;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.size-checkbox:hover {
+    background: #f0f0f0;
+    transform: scale(1.05);
+}
+
+/* Quantity input */
+.quantity-input {
+    width: 60px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* Remove Image Button */
+.remove-image-container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.remove-image-btn {
+    background-color: rgb(0, 0, 0);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remove-image-btn:hover {
+    background-color: darkred;
+}
+
+/* Add to Bag Button */
+.add-to-bag-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.add-to-bag-btn {
+    background-color: #222222;
+    color: #ffffff;
+    padding: 12px 24px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    justify-content: center;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+}
+
+.add-to-bag-btn:hover {
+    background-color: #4e4e4e;
+    transform: scale(1.05);
+}
+
+.add-to-bag-btn:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+/* Modal Action Buttons */
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.add-to-bag-btn, .edit-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 48%;
+}
+
+.add-to-bag-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.add-to-bag-btn:hover {
+    background-color: #45a049;
+}
+
+.add-to-cart-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 48%;
+}
+
+.add-to-cart-btn {
+    background-color: #000000;
+    color: white;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #273bd7;
+    color: white;
+  
+}
+
+
+.edit-btn {
+    background-color: #f1f1f1;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.edit-btn:hover {
+    background-color: #ddd;
+}
+
+
+.validation-error {
+    margin-bottom: 10px;
+    color: red;
+}
+
+.error-message {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 900px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Title */
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Final Preview Container */
+.final-preview-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+/* Front and Back View Sections */
+.final-preview-front, .final-preview-back {
+    width: 40%;
+    height: 50%;
+}
+
+.final-preview-front h4, .final-preview-back h4 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
