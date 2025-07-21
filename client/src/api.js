@@ -193,6 +193,58 @@ async function fetchOrderDetails(orderID) {
   return await resp.json()
 }
 
+async function addCustomTshirtToCart(customTshirtData) {
+  const userID = getUser()._id;
+  const resp = await fetch(`${API_URL}/carts/${userID}/custom`, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "x-access-token": getAccessToken(),
+      },
+      body: JSON.stringify(customTshirtData),
+  });
+  return await resp.json();
+}
+
+async function getUserCartWithCustomItems() {
+  const userID = getUser()._id;
+  const resp = await fetch(`${API_URL}/carts/${userID}`, {
+      headers: {
+          "x-access-token": getAccessToken(),
+      }
+  });
+  const cart = await resp.json();
+  
+  if (cart.products) {
+      cart.products = cart.products.map(product => {
+          if (product.type === 'custom') {
+              return {
+                  id: product._id,
+                  type: 'custom',
+                  title: 'Custom T-Shirt',
+                  price: product.totalPrice,
+                  image: product.frontImageUrl,
+                  quantity: product.quantity,
+                  customDetails: {
+                      tshirtType: product.tshirtType,
+                      color: product.color,
+                      size: product.size,
+                      backImageUrl: product.backImageUrl
+                  }
+              };
+          }
+          return {
+              id: product.productID._id,
+              title: product.productID.title,
+              price: product.productID.price,
+              image: product.productID.image,
+              quantity: product.quantity,
+          };
+      });
+  }
+  return cart;
+}
+// Update the export default to include new methods
 export default {
   registerUser,
   loginUser,
@@ -202,8 +254,9 @@ export default {
   fetchProducts,
   fetchProduct,
   createUserCart,
-  getUserCart,
+  getUserCart: getUserCartWithCustomItems, // Replace with new method
   addProductsToCart,
+  addCustomTshirtToCart, // Add new method
   removeProductFromCart,
   patchCart,
   clearCart,

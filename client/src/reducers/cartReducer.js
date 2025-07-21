@@ -39,6 +39,29 @@ export default function cartReducer(state, action) {
         total: getCartTotal(newProducts)
       }
 
+      case "ADD_CUSTOM_TSHIRT":
+        const customProduct = {
+          id: action.payload._id || Date.now().toString(),
+          type: 'custom',
+          title: 'Custom T-Shirt',
+          price: action.payload.totalPrice,
+          image: action.payload.frontImageUrl,
+          quantity: action.payload.quantity,
+          customDetails: {
+            tshirtType: action.payload.tshirtType,
+            color: action.payload.color,
+            size: action.payload.size,
+            backImageUrl: action.payload.backImageUrl
+          }
+        }
+        newProducts = [...state.products, customProduct]
+  
+        return {
+          ...state,
+          products: newProducts,
+          total: getCartTotal(newProducts)
+        }
+
     case "REMOVE_PRODUCT":
       newProducts = state.products.filter(p => p.id !== action.payload)
 

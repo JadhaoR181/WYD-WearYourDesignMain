@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ProductList.css';
+import { FaSearch, FaFilter } from 'react-icons/fa';
+import { MdCategory } from 'react-icons/md';
+import { BiMoney } from 'react-icons/bi';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -9,25 +12,42 @@ const ProductList = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentProduct, setCurrentProduct] = useState({});
   const [expanded, setExpanded] = useState({});
+
+  const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState('All');
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [limit] = useState(10); // Number of products per page
+  const [limit] = useState(10);
 
-  // Fetch products with pagination
+  // Available categories for filter
+  const [availableCategories, setAvailableCategories] = useState(['All']);
+
   useEffect(() => {
+  const delayDebounce = setTimeout(() => {
     const fetchProducts = async () => {
+      setLoading(true);
+      setError(null);
       try {
         const res = await axios.get('http://localhost:5001/products', {
           params: {
             page: currentPage,
-            limit: limit,
+            limit,
+            search: searchTerm.trim() || undefined,
+            category: category !== 'All' ? category : undefined,
           },
         });
+
         setProducts(res.data.products);
         setTotalPages(res.data.totalPages);
+
+        if (res.data.categories && Array.isArray(res.data.categories)) {
+          setAvailableCategories(['All', ...res.data.categories]);
+        } else {
+          const cats = Array.from(new Set(res.data.products.map(p => p.category))).filter(Boolean);
+          setAvailableCategories(['All', ...cats]);
+        }
         setLoading(false);
       } catch (err) {
         console.error(err);
@@ -35,8 +55,13 @@ const ProductList = () => {
         setLoading(false);
       }
     };
+
     fetchProducts();
-  }, [currentPage, limit]);
+  }, 400); // debounce delay
+
+  return () => clearTimeout(delayDebounce);
+}, [currentPage, limit, searchTerm, category]);
+
 
   const deleteProduct = async (id) => {
     const confirmDelete = window.confirm('Are you sure you want to delete this product?');
@@ -44,16 +69,16 @@ const ProductList = () => {
 
     try {
       await axios.delete(`http://localhost:5001/products/${id}`);
-      setProducts((prevProducts) => prevProducts.filter(product => product._id !== id));
-      alert("Product deleted successfully!");
+      setProducts(prev => prev.filter(product => product._id !== id));
+      alert('Product deleted successfully!');
     } catch (err) {
       console.error(err);
-      alert("Error deleting the product.");
+      alert('Error deleting the product.');
     }
   };
 
   const toggleDescription = (id) => {
-    setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
+    setExpanded(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
   const handleEditClick = (product) => {
@@ -65,13 +90,15 @@ const ProductList = () => {
     e.preventDefault();
     try {
       await axios.put(`http://localhost:5001/products/${currentProduct._id}`, currentProduct);
-      setProducts((prevProducts) => prevProducts.map((prod) => (prod._id === currentProduct._id ? { ...currentProduct } : prod)));
-      alert("Product updated successfully!");
+      setProducts(prev =>
+        prev.map(prod => (prod._id === currentProduct._id ? { ...currentProduct } : prod))
+      );
+      alert('Product updated successfully!');
       setIsEditing(false);
       setCurrentProduct({});
     } catch (err) {
       console.error(err);
-      alert("Error updating the product.");
+      alert('Error updating the product.');
     }
   };
 
@@ -80,8 +107,14 @@ const ProductList = () => {
     setCurrentPage(page);
   };
 
-  if (loading) return <p>Loading products...</p>;
-  if (error) return <p>{error}</p>;
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+
+
+  if (loading) return <p className="loading-text">Loading products...</p>;
+  if (error) return <p className="error-text">{error}</p>;
 
   return (
     <div className="product-list-page">
@@ -90,91 +123,146 @@ const ProductList = () => {
         <h2 className="product-list-title">Product List</h2>
       </div>
 
-      {/* Products List Container */}
-      <div className="product-list-container">
-        {isEditing ? (
-          <form onSubmit={handleUpdateProduct} className="update-form">
-            <h3 className="text-lg font-semibold">Update Product</h3>
-            <input
-              type="text"
-              value={currentProduct.title || ''}
-              onChange={(e) => setCurrentProduct({ ...currentProduct, title: e.target.value })}
-              placeholder="Product Title"
-              required
-              className="mb-2 p-2 border rounded"
-            />
-            <textarea
-              value={currentProduct.description || ''}
-              onChange={(e) => setCurrentProduct({ ...currentProduct, description: e.target.value })}
-              placeholder="Product Description"
-              required
-              className="mb-2 p-2 border rounded"
-            />
-            <input
-              type="number"
-              value={currentProduct.price || ''}
-              onChange={(e) => setCurrentProduct({ ...currentProduct, price: parseFloat(e.target.value) })}
-              placeholder="Product Price"
-              required
-              className="mb-2 p-2 border rounded"
-            />
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
-              Update
-            </button>
-            <button onClick={() => setIsEditing(false)} className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition ml-2">
-              Cancel
-            </button>
-          </form>
-        ) : (
-          <div className="grid gap-6">
-            {products.map((product) => (
-              <div key={product._id} className="product-card p-4 bg-white rounded-lg shadow-md">
-                <div className="product-image-container">
-                  <img src={product.image} alt={product.title} className="product-image" />
-                </div>
-                <h3 className="text-lg font-semibold mt-4">{product.title}</h3>
-                <div className={`product-description ${expanded[product._id] ? 'expanded' : ''}`}>
-                  <p>{product.description}</p>
-                </div>
-                <button onClick={() => toggleDescription(product._id)} className="read-more">
-                  {expanded[product._id] ? 'Read Less' : 'Read More'}
-                </button>
-                <p className="font-bold text-gray-800 mb-4">₹ {product.price}</p>
-                <div className="button-group flex space-x-2">
-                  <button onClick={() => deleteProduct(product._id)} className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
-                    Delete
-                  </button>
-                  <button onClick={() => handleEditClick(product)} className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition">
-                    Update
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      {/* Search and Filter */}
+    <div className="search-container">
+    <div className="search-top-row">
+    <div className="search-filter-item">
+      <input
+        type="text"
+        placeholder="Search products..."
+        value={searchTerm}
+        onChange={handleSearchChange}
+      />
+    </div>
 
-      {/* Pagination Controls */}
+    <button className="search-filter-button">
+      <FaFilter />
+      <span>Filter</span>
+    </button>
+  </div>
+
+  {/* Pagination Controls */}
       <div className="pagination-controls">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className="pagination-button"
+          aria-label="Previous Page"
         >
-          Previous
+          &laquo; Prev
         </button>
+
+        {[...Array(totalPages)].map((_, idx) => {
+          const page = idx + 1;
+          return (
+            <button
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`pagination-button ${currentPage === page ? 'active' : ''}`}
+              aria-current={currentPage === page ? 'page' : undefined}
+              aria-label={`Page ${page}`}
+            >
+              {page}
+            </button>
+          );
+        })}
+
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           className="pagination-button"
+          aria-label="Next Page"
         >
-          Next
+          Next &raquo;
         </button>
-        <span className="pagination-info">
-          Page {currentPage} of {totalPages}
-        </span>
       </div>
-      
+</div>
+
+
+
+      {/* Products or Edit Form */}
+      <div className="product-list-container">
+        {isEditing ? (
+          <form onSubmit={handleUpdateProduct} className="update-form">
+            <h3 className="update-form-title">Update Product</h3>
+            <input
+              type="text"
+              value={currentProduct.title || ''}
+              onChange={e => setCurrentProduct({ ...currentProduct, title: e.target.value })}
+              placeholder="Product Title"
+              required
+              className="update-input"
+            />
+            <textarea
+              value={currentProduct.description || ''}
+              onChange={e => setCurrentProduct({ ...currentProduct, description: e.target.value })}
+              placeholder="Product Description"
+              required
+              className="update-textarea"
+            />
+            <input
+              type="number"
+              value={currentProduct.price || ''}
+              onChange={e =>
+                setCurrentProduct({ ...currentProduct, price: parseFloat(e.target.value) })
+              }
+              placeholder="Product Price"
+              required
+              min="0"
+              step="0.01"
+              className="update-input"
+            />
+            <div className="button-group update-buttons">
+              <button type="submit" className="btn btn-primary">
+                Update
+              </button>
+              <button type="button" onClick={() => setIsEditing(false)} className="btn btn-secondary">
+                Cancel
+              </button>
+            </div>
+          </form>
+        ) : (
+          <div className="grid">
+            {products.length > 0 ? (
+              products.map(product => (
+                <div key={product._id} className="product-card">
+                  <div className="product-image-container">
+                    <img src={product.image} alt={product.title} className="product-image" />
+                  </div>
+                  <h3 className="text-lg font-semibold mt-4 product-title">{product.title}</h3>
+                  <div className={`product-description ${expanded[product._id] ? 'expanded' : ''}`}>
+                    <p>{product.description}</p>
+                  </div>
+                  <button onClick={() => toggleDescription(product._id)} className="read-more">
+                    {expanded[product._id] ? 'Read Less' : 'Read More'}
+                  </button>
+                  <p className="font-bold text-gray-800 mb-4 product-price">
+                    ₹ {product.price.toFixed(2)}
+                  </p>
+                  <div className="button-group flex space-x-2">
+                    <button
+                      onClick={() => deleteProduct(product._id)}
+                      className="btn btn-danger"
+                    >
+                      Delete
+                    </button>
+                    <button
+                      onClick={() => handleEditClick(product)}
+                      className="btn btn-warning"
+                    >
+                      Update
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="no-results">No products found.</p>
+            )}
+          </div>
+        )}
+      </div>
+
+
     </div>
   );
 };

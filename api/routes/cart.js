@@ -58,6 +58,33 @@ router.post("/clear", verifyToken, async (req, res) => {
 	}
 })
 
+// Add custom t-shirt to cart - authenticated user
+router.post("/:id/custom", verifyAuthorization, async (req, res) => {
+    try {
+        const customTshirtData = {
+            type: 'custom',
+            productData: req.body,
+            quantity: req.body.quantity || 1
+        };
+
+        await Cart.updateOne(
+            {userID: ObjectId(req.params.id)},
+            {$push: { products: customTshirtData }},
+            {new: true}
+        );
+
+        return res.json({
+            status: "ok",
+            message: "Custom t-shirt added to cart",
+            customTshirtId: customTshirtData._id
+        });
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json(cartResponse.unexpectedError);
+    }
+});
+
 // Get a cart - authorized user & admin only
 router.get("/:id", verifyAuthorization, async (req, res) => {
 	try {
@@ -161,6 +188,11 @@ const cartResponse = {
 		status: "error",
 		message: "an unexpected error occurred",
 	},
+	customTshirtAdded: {
+		status: "ok",
+		message: "custom t-shirt has been added to cart"
+	},
+	
 }
 
 module.exports = router

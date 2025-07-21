@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import axios from 'axios';
-import './AddProduct.css';  // Import the CSS file
+import { Upload, X, Plus, Package, DollarSign, Tag, Palette, Ruler, FileText, Camera } from 'lucide-react';
+import './AddProduct.css';
 
 const AddProduct = () => {
   const [product, setProduct] = useState({
@@ -14,105 +14,313 @@ const AddProduct = () => {
     color: ''
   });
 
-  const [imagePreview, setImagePreview] = useState(null);  
-  const [uploading, setUploading] = useState(false);  
-  const [submitting, setSubmitting] = useState(false);  // State for form submission
-  const imageInputRef = useRef(null);  
+  const [imagePreview, setImagePreview] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [dragActive, setDragActive] = useState(false);
+  const imageInputRef = useRef(null);
 
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
 
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
+  const handleImageChange = async (file) => {
     if (file) {
-      setUploading(true);  
+      setUploading(true);
+      
+      // Replace this with your actual Cloudinary upload logic
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('upload_preset', 'ujkreuzq'); 
+      formData.append('upload_preset', 'ujkreuzq');
 
       try {
-        const res = await axios.post('https://api.cloudinary.com/v1_1/dbxkrall1/image/upload', formData);
-        const imageUrl = res.data.secure_url;
-        setProduct({ ...product, image: imageUrl });
-        setImagePreview(imageUrl);
+        // Simulate upload - replace with actual API call
+        const imageUrl = URL.createObjectURL(file);
+        
+        setTimeout(() => {
+          setProduct({ ...product, image: imageUrl });
+          setImagePreview(imageUrl);
+          setUploading(false);
+        }, 1500);
+        
+        // Actual Cloudinary upload (uncomment when ready)
+        // const res = await axios.post('https://api.cloudinary.com/v1_1/dbxkrall1/image/upload', formData);
+        // const imageUrl = res.data.secure_url;
+        // setProduct({ ...product, image: imageUrl });
+        // setImagePreview(imageUrl);
       } catch (err) {
-        console.error('Error uploading image:', err);
-        alert('Image upload failed. Please try again.');  // Alert user
-      } finally {
-        setUploading(false);  
+        alert('Image upload failed.');
+        setUploading(false);
       }
+    }
+  };
+
+  const handleFileInput = (e) => {
+    const file = e.target.files[0];
+    handleImageChange(file);
+  };
+
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    const files = e.dataTransfer.files;
+    if (files && files[0]) {
+      handleImageChange(files[0]);
     }
   };
 
   const handleRemoveImage = () => {
     setImagePreview(null);
     setProduct({ ...product, image: '' });
-    if (imageInputRef.current) {
-      imageInputRef.current.value = '';  
-    }
+    if (imageInputRef.current) imageInputRef.current.value = '';
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitting(true);  // Set submitting state to true
+    setSubmitting(true);
+    
     try {
-      const res = await axios.post('http://localhost:5001/products/add', product);
-      alert('Product added successfully!');
+      // Replace with your actual API call
+      // await axios.post('http://localhost:5001/products/add', product);
       
-      // Reset form
-      setProduct({
-        title: '',
-        description: '',
-        image: '',
-        price: 0,
-        inStock: true,
-        categories: '',
-        size: '',
-        color: ''
-      });
-      setImagePreview(null);  
-      if (imageInputRef.current) {
-        imageInputRef.current.value = '';  
-      }
+      // Simulate API call
+      setTimeout(() => {
+        alert('Product added successfully!');
+        setProduct({
+          title: '',
+          description: '',
+          image: '',
+          price: 0,
+          inStock: true,
+          categories: '',
+          size: '',
+          color: ''
+        });
+        setImagePreview(null);
+        if (imageInputRef.current) imageInputRef.current.value = '';
+        setSubmitting(false);
+      }, 2000);
     } catch (err) {
-      console.error(err);
-      alert('Failed to add product. Please try again.');  // Alert user
-    } finally {
-      setSubmitting(false);  // Reset submitting state
+      alert('Failed to add product.');
+      setSubmitting(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="add-product-form">
-      <h2>Add Product</h2>
-      <input name="title" placeholder="Title" value={product.title} onChange={handleChange} required />
-      <input name="description" placeholder="Description" value={product.description} onChange={handleChange} required />
-      <input name="price" type="number" placeholder="Price" value={product.price} onChange={handleChange} required min="0" />
-      
-      <select name="categories" value={product.categories} onChange={handleChange} required>
-        <option value="">Select Category</option>
-        <option value="men">Men</option>
-        <option value="women">Women</option>
-      </select>
+    <div className="add-product-page">
+      <div className="add-product-container">
+        {/* Header */}
+        <div className="header-section">
+          
+          <p className="form-title">Add New Product</p>
+          <p className="header-subtitle">Create and showcase your amazing products</p>
+        </div>
 
-      <input name="size" placeholder="Size (comma separated)" value={product.size} onChange={handleChange} />
-      <input name="color" placeholder="Color (comma separated)" value={product.color} onChange={handleChange} />
+        {/* Form Card */}
+        <div className="form-card">
+          <div className="form-container">
+            <div className="form-grid">
+              
+              {/* Product Title */}
+              <div className="form-group full-width">
+                <label className="form-label">
+                  <Package className="icon-blue" />
+                  Product Title
+                </label>
+                <input
+                  name="title"
+                  value={product.title}
+                  onChange={handleChange}
+                  placeholder="Enter product name"
+                  required
+                  className="form-input"
+                />
+              </div>
 
-      <input type="file" accept="image/*" onChange={handleImageChange} ref={imageInputRef} />
-      {uploading ? (
-        <p>Uploading image...</p>
-      ) : (
-        imagePreview && (
-          <div className="image-preview-container">
-            <img src={imagePreview} alt="Preview" className="image-preview" />
-            <button type="button" onClick={handleRemoveImage} className="remove-image-btn">X</button>
+              {/* Price */}
+              <div className="form-group">
+                <label className="form-label">
+                  <DollarSign className="icon-green" />
+                  Price
+                </label>
+                <input
+                  name="price"
+                  type="number"
+                  value={product.price}
+                  onChange={handleChange}
+                  placeholder="0.00"
+                  required
+                  min="0"
+                  step="0.01"
+                  className="form-input"
+                />
+              </div>
+
+              {/* Category */}
+              <div className="form-group">
+                <label className="form-label">
+                  <Tag className="icon-purple" />
+                  Category
+                </label>
+                <select
+                  name="categories"
+                  value={product.categories}
+                  onChange={handleChange}
+                  required
+                  className="form-select"
+                >
+                  <option value="">Select Category</option>
+                  <option value="men">Men's Collection</option>
+                  <option value="women">Women's Collection</option>
+                </select>
+              </div>
+
+              {/* Size */}
+              <div className="form-group">
+                <label className="form-label">
+                  <Ruler className="icon-orange" />
+                  Size
+                </label>
+                <input
+                  name="size"
+                  value={product.size}
+                  onChange={handleChange}
+                  placeholder="S, M, L, XL"
+                  className="form-input"
+                />
+              </div>
+
+              {/* Color */}
+              <div className="form-group">
+                <label className="form-label">
+                  <Palette className="icon-pink" />
+                  Color
+                </label>
+                <input
+                  name="color"
+                  value={product.color}
+                  onChange={handleChange}
+                  placeholder="Red, Blue, Green"
+                  className="form-input"
+                />
+              </div>
+
+              {/* Description */}
+              <div className="form-group description-field">
+                <label className="form-label">
+                  <FileText className="icon-indigo" />
+                  Product Description
+                </label>
+                <textarea
+                  name="description"
+                  value={product.description}
+                  onChange={handleChange}
+                  placeholder="Describe your product in detail..."
+                  required
+                  className="form-textarea"
+                />
+              </div>
+
+              {/* Image Upload */}
+              <div className="form-group full-width">
+                <label className="form-label">
+                  <Camera className="icon-emerald" />
+                  Product Image
+                </label>
+                
+                {!imagePreview ? (
+                  <div
+                    className={`image-upload-container ${dragActive ? 'drag-active' : ''}`}
+                    onDragEnter={handleDrag}
+                    onDragLeave={handleDrag}
+                    onDragOver={handleDrag}
+                    onDrop={handleDrop}
+                  >
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileInput}
+                      ref={imageInputRef}
+                      className="image-upload-input"
+                    />
+                    <div className="upload-content">
+                      <div className="upload-icon">
+                        <Upload />
+                      </div>
+                      {uploading ? (
+                        <div className="upload-loading">
+                          <div className="spinner"></div>
+                          <p className="upload-loading-text">Uploading image...</p>
+                        </div>
+                      ) : (
+                        <div>
+                          <p className="upload-text">Drop your image here or click to browse</p>
+                          <p className="upload-subtext">Supports JPG, PNG, GIF up to 10MB</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="image-preview-card">
+                    <div className="image-preview-content">
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        className="image-preview"
+                      />
+                      <div className="image-preview-info">
+                        <p className="image-preview-title">Image uploaded successfully!</p>
+                        <p className="image-preview-subtitle">Your product image is ready</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleRemoveImage}
+                        className="image-remove-btn"
+                      >
+                        <X />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <div className="submit-section">
+              <button
+                onClick={handleSubmit}
+                disabled={uploading || submitting}
+                className="submit-btn"
+              >
+                {submitting ? (
+                  <>
+                    <div className="spinner"></div>
+                    <span>Adding Product...</span>
+                  </>
+                ) : (
+                  <>
+                    <Plus />
+                    <span>Add Product</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
-        )
-      )}
-
-      <button type="submit" disabled={uploading || submitting}>Add Product</button>
-    </form>
+        </div>
+      </div>
+    </div>
   );
 };
 
