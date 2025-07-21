@@ -8,7 +8,7 @@
 
 ## 🚀 Live Demo
 
-🔗 _Coming Soon_ (You can update this section with your deployed URL)
+🔗 _Coming Soon_ 
 
 ---
 
