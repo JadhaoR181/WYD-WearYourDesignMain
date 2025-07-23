@@ -31,7 +31,6 @@ This project was built using the **MERN stack** and demonstrates a complete end-
 
 ## 📷 Screenshots
 
-> *(Add these screenshots in your `/public/screenshots/` folder and link them here)*
 
 - Home Page  
 - Customizer (Canvas Preview)  
@@ -89,7 +88,7 @@ VITE_API_BASE_URL=http://localhost:5000
 
 ## 🌐 Live Demo
 
-🚀 **Deployed Link (if available):** [Coming Soon](#)
+🚀 **Deployement :** [Coming Soon](#)
 
 ---
 
@@ -106,15 +105,6 @@ WYD-WearYourDesignMain/
 │   ├── models/
 │   └── ...
 ```
-
----
-
-## ✅ To-Do / Future Improvements
-
-- [ ] Add login/authentication for users
-- [ ] Add user order history
-- [ ] Image optimization & lazy loading
-- [ ] Responsive improvements for mobile view
 
 ---
 
