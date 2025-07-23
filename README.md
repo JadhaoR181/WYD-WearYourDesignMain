@@ -1,92 +1,77 @@
-# WYD - WearYourDesign 👕
 
-**WYD (WearYourDesign)** is a full-stack e-commerce clothing platform where users can design and purchase custom T-shirts. It provides a powerful admin panel for managing products and is built using the MERN stack with modern tools like React, Vite, and Cloudinary integration.
+# 👕 WYD – WearYourDesign
 
-> ⚠️ This project is currently under active development. New features are being added regularly.
+**WYD (WearYourDesign)** is a full-fledged e-commerce clothing platform that allows users to **design their own custom T-shirts**, visualize them in real-time, and purchase them securely. It also features a modern **admin panel** to manage users, products, and orders.
 
----
-
-## 🚀 Live Demo
-
-🔗 _Coming Soon_ 
+This project was built using the **MERN stack** and demonstrates a complete end-to-end product lifecycle from frontend interaction to backend processing and payment handling.
 
 ---
 
-## 📸 Screenshots
+## 🛠️ Tech Stack
 
-*Will be added once UI is finalized.*
-
----
-
-## ⚙️ Tech Stack
-
-**Frontend:**  
-- React + Vite  
-- Tailwind CSS / Custom CSS
-
-**Backend:**  
-- Node.js  
-- Express.js  
-- MongoDB (Mongoose)
-
-**Others:**  
-- Cloudinary (Image Uploads)  
-- REST API Integration
+| Layer       | Technologies                               |
+|-------------|---------------------------------------------|
+| Frontend    | React.js + Vite, Tailwind CSS, html2canvas |
+| Backend     | Node.js, Express.js                        |
+| Database    | MongoDB                                    |
+| Payments    | Stripe API                                 |
+| Tools & APIs| Postman, Cloudinary                        |
 
 ---
 
-## 🛠 Features
+## 🚀 Features
 
-### 🛍️ User Features
-- View available T-shirt products
-- Customize designs (3D customization)
-- Add to cart and place orders (coming soon)
-
-### 🧑‍💼 Admin Panel
-- Add new products with:
-  - Title, Description, Price, Category (Men/Women), Size, Color, Image Upload
-- View all products in a modern UI layout
-- Edit or Delete existing products
-- Dashboard with upcoming analytics (revenue, orders, etc.)
+- 🎨 **T-shirt Design Tool** – Users can customize apparel and preview using canvas + html2canvas
+- 💳 **Secure Payments** – Stripe integration for safe and smooth checkout
+- 🧾 **Product Management** – Admin panel with full CRUD functionality
+- 📦 **Order Tracking** – View and manage orders as an admin
+- 👤 **User Authentication** – Register/login functionality (future scope)
 
 ---
 
-## 📦 Project Structure
+## 📷 Screenshots
 
-```
-WYD-WearYourDesignMain/
-├── client/           # Frontend (React + Vite)
-│   ├── src/
-│   └── ...
-├── server/           # Backend (Node.js + Express)
-│   ├── routes/
-│   ├── models/
-│   ├── controllers/
-│   └── ...
-└── README.md
-```
+> *(Add these screenshots in your `/public/screenshots/` folder and link them here)*
+
+- Home Page  
+- Customizer (Canvas Preview)  
+- Checkout Page  
+- Admin Dashboard  
 
 ---
 
-## 🔧 Getting Started
+## ⚙️ Getting Started
 
-### 1. Clone the Repository
+### 📁 Clone the Repository
 
 ```bash
 git clone https://github.com/JadhaoR181/WYD-WearYourDesignMain.git
 cd WYD-WearYourDesignMain
 ```
 
-### 2. Setup Backend
+---
+
+### 🔌 Backend Setup (Express API)
 
 ```bash
 cd server
 npm install
-# Add your MongoDB URI and Cloudinary credentials to a .env file
-npm start
+npm run server
 ```
 
-### 3. Setup Frontend
+- Create a `.env` file in `/server/`:
+
+```env
+MONGO_URI=your_mongo_connection_string
+STRIPE_SECRET_KEY=your_stripe_key
+CLOUDINARY_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_key
+CLOUDINARY_API_SECRET=your_secret
+```
+
+---
+
+### 💻 Frontend Setup (React + Vite)
 
 ```bash
 cd client
@@ -94,18 +79,50 @@ npm install
 npm run dev
 ```
 
+- Create a `.env` file in `/client/`:
+
+```env
+VITE_API_BASE_URL=http://localhost:5000
+```
+
 ---
 
-## 🌐 Deployment
+## 🌐 Live Demo
 
-- Frontend: [Vercel](https://vercel.com/)
-- Backend: [Render](https://render.com/) / [Railway](https://railway.app/)
+🚀 **Deployed Link (if available):** [Coming Soon](#)
 
 ---
 
-## 🤝 Contributing
+## 📁 Folder Structure
 
-Pull requests are welcome! If you want to contribute major changes, please open an issue first to discuss.
+```
+WYD-WearYourDesignMain/
+├── client/     # Frontend - React + Vite
+│   ├── src/
+│   └── ...
+├── server/     # Backend - Express
+│   ├── routes/
+│   ├── controllers/
+│   ├── models/
+│   └── ...
+```
+
+---
+
+## ✅ To-Do / Future Improvements
+
+- [ ] Add login/authentication for users
+- [ ] Add user order history
+- [ ] Image optimization & lazy loading
+- [ ] Responsive improvements for mobile view
+
+---
+
+## 🧑‍💻 Author
+
+**Ravindra Jadhav**  
+Final Year B.E. IT Student | MERN Stack & Android Developer  
+📫 [GitHub Profile](https://github.com/JadhaoR181)
 
 ---
 
@@ -115,8 +132,12 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-## ✨ Author
+## 🙌 Contributions
 
-**Ravindra Jadhav**  
-📧 [Connect on LinkedIn](https://www.linkedin.com/in/ravindrajadhav181)  
-📁 GitHub: [@JadhaoR181](https://github.com/JadhaoR181)
+Contributions are welcome! Feel free to open issues or submit pull requests.
+
+---
+
+## ⭐️ Show Your Support
+
+If you like this project, please consider **starring** 🌟 the repository. It motivates me to continue improving it!
